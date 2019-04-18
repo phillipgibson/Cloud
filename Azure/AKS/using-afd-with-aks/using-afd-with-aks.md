@@ -8,6 +8,10 @@ So if you take a look at the current documentation concerning [AKS BC/DR strateg
 
 Depending on your application needs, there is a variety of ways and possibilities of exposing your web applications. You can explore these options in more detail with this article on [Building with Azure's application delivery suite](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-lb-with-azure-app-delivery-suite#building-with-azures-application-delivery-suite). For the purposes of this walkthrough, we will be using ADF to load balance the global DNS-based traffic and http traffic between two Azure regions with identical AKS service public IP application endpoints as depicted below. 
 
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-azure-front-door.png)
+
+
+
 
 
 
