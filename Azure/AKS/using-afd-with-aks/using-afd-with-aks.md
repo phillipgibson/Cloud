@@ -4,6 +4,8 @@ Recently we [announced](https://azure.microsoft.com/en-us/blog/azure-front-door-
 ## Understanding the options for AKS with Azure's Application Delivery Suite
 So if you take a look at the current documentation concerning [AKS BC/DR strategy]( https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-multi-region ), specifically the network ingress flow for a multi-region cluster deployment of an AKS service, you will see that Azure Traffic Manager is load balancing the global DNS-based traffic. Downstream from the Traffic Manager service are network appliances (NVA). These NVAs most likely will be an Azure Application Gateway, or similar Azure Marketplace device,  to provide any WAF and session affinity needs. 
 
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-azure-traffic-manager.png)
+
 
 Depending on your application needs, there is a variety of ways and possibilities of exposing your web applications. You can explore these options in more detail with this article on [Building with Azure's application delivery suite](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-lb-with-azure-app-delivery-suite#building-with-azures-application-delivery-suite). 
 
