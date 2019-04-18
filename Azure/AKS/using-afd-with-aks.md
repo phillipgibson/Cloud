@@ -1,1 +1,2 @@
-//wip
+# Using Azure Front Door Service (AFD) with Azure Kubernetes Service (AKS)  
+Recently we [announced](https://azure.microsoft.com/en-us/blog/azure-front-door-service-is-now-generally-available/) the general availabilty of the Azure Front Door Service (AFD). If you're not familiar with the Azure Front Door service and what it is, you can simply think of it as a global endpoint service for your web applications. What's really exciting about AFD is some of the key functionality you get with it, like global https load balancing, WAF, and URL rewite just to name a few.  
