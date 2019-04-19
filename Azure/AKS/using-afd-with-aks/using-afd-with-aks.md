@@ -18,14 +18,12 @@ Since I'm highlighting AFD functionality, we'll be doing a simple deployment of 
 > NOTE: I'm using the Azure Cloud Shell for all of my CLI commands
 
 First thing we'll do is create two Service Principles for the two AKS clusters
-
 ```
 az ad sp create-for-rbac -n demo-adf-aks-eastus2-cluster --skip-assignment
 az ad sp create-for-rbac -n demo-adf-aks-westus2-cluster --skip-assignment
 ```
 
 Please take note of the output of the service principles created. We will be using both the appId and password properties in later commands. You should see output similar to this below for each command. 
-
 ```
 {
  "appID": "8cea7e76-0cda-45d2-a62b-bf75dfb8da91",
@@ -38,7 +36,6 @@ Please take note of the output of the service principles created. We will be usi
 > NOTE: Yes that information is fake :)
 
 Now create two resource groups. One for each Azure Region
-
 ```
 az group create -l eastus2 -n demo-adf-aks-eastus2-cluster
 az group create -l eastus2 -n demo-adf-aks-westus2-cluster
@@ -47,7 +44,6 @@ az group create -l eastus2 -n demo-adf-aks-westus2-cluster
 We will now create the Azure Virtual Networks for each Azure Region
 
 For the Azure East US 2 Region
-
 ```
 az network vnet create \
  -g demo-adf-aks-eastus2-cluster \
@@ -56,6 +52,16 @@ az network vnet create \
  --subnet-name demo-adf-aks-eastus2-cluster-aks-subnet \ 
  --subnet-prefix 10.50.1.0/24
  ```
-We're going to create two additional subnets in each VNet. I like to create a subnet specific to the AKS service range. I do this so that if I try to use that range in Azure somewhere else, Azure will tell me that it is in use, so I won't have any conflict with other devices. We are also going to make a Azure Firewall subnet. This will be used to show you an additional configuration of using the Azure Firewall's public IP to NAT back to a AKS service that is using an internal load balancer. 
  
+We're going to create two additional subnets in each VNet. I like to create a subnet specific to the AKS service range. I do this so that if I try to use that range in Azure somewhere else Azure will tell me that it is in use, so I won't have any conflict with other devices. We are also going to make a Azure Firewall subnet. This will be used to show you an additional configuration of using the Azure Firewall's public IP to NAT back to a AKS service that is using an internal load balancer. 
+ 
+Create the Additional Subnet for the AKS Service Range
+```
+az network vnet subnet create \
+ -g demo-adf-aks-eastus2-cluster \
+ --vnet-name demo-adf-aks-eastus2-cluster-vnet \
+ --name demo-adf-aks-eastus2-cluster-vnet-akssvc-subnet
+ --address-prefix 10.50.2.0/24
+```
+
 
