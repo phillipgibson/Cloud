@@ -195,6 +195,16 @@ kubectl get svc
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-browser.png)
 
 ## Deploy the Azure Front Door Service
-Now we're ready to tie it all together and use AFD as a global endpoint for the two AKS services running in seperate Azure Regions (EastUS2 and WestUS2)
+Now we'll tie it all together and use AFD as a global endpoint for the two AKS services running in seperate Azure Regions (EastUS2 and WestUS2)
+
+Create a resource group for the AFD instance. This will seem wierd because your first instinct is to think that AFD is a regional service and will be tied to the availablity of the Azure region where the resource group gets deployed to. AFD is a global service, just like Azure Traffic Manager, and we must just associate it to a region for the ARM deployment.
+```
+az group create -l eastus2 -n demo-adf-aks-global
+```
+Most likely if this is your first time using AFD you will need to install the Azure CLI extension, even when using Azure Cloud Shell
+```
+az extension add --name front-door
+```
+> NOTE: At the time of this writing the AFD Azure CLI extension is in preview
 
 
