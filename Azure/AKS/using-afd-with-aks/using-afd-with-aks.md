@@ -68,7 +68,7 @@ Create the Additional Subnet for the AKS Service Range
 az network vnet subnet create \
  -g demo-adf-aks-eastus2-cluster \
  --vnet-name demo-adf-aks-eastus2-cluster-vnet \
- --name demo-adf-aks-eastus2-cluster-vnet-akssvc-subnet
+ --name demo-adf-aks-eastus2-cluster-vnet-akssvc-subnet \
  --address-prefix 10.50.2.0/24
 ```
 Create the Additional Subnet for the Azure Firewall
