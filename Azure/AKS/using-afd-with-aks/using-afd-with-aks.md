@@ -184,8 +184,12 @@ kubectl get svc
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-browser.png)
 
-We will repeat the same deployment for the West US 2 AKS cluster
+Repeat the same deployment for the West US 2 AKS cluster and verify you can browse to the endpoint.
 ```
 kubectl config use-context demo-adf-aks-westus2-cluster
 kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
 ```
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-kubectl.png)
+
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-browser.png)
+
