@@ -159,7 +159,7 @@ az aks create \
   --no-wait
   ```
 
-We now have two AKS clusters up and running in both the East US 2 and West US 2 Azure Regions. You can verify the AKS cluster are ready by getting the credentials and ensuring the nodes are in a ready status.
+We now have two AKS clusters up and running in both the East US 2 and West US 2 Azure Regions. You can verify the AKS clusters are ready by getting the credentials and ensuring the nodes are in a ready status.
 ```
 az aks get-credentials -n demo-adf-aks-eastus2-cluster -g demo-adf-aks-eastus2-cluster
 kubectl get nodes
@@ -169,4 +169,9 @@ kubectl get nodes
 ```
 
 ## Deploy the Sample Applications to each AKS Cluster
+Now let's deploy a simple Node.js app to each cluster. Each app is personalized for the Azure region it will be deployed to.
 
+For the Azure East US 2 deployment use the following:
+```
+
+```
