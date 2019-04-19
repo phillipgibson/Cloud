@@ -15,6 +15,8 @@ As you can tell, using AFD has already streamlined the architecture. Typical pat
 ## Deploy an AKS Cluster in Two Azure Regions
 Since I'm highlighting AFD functionality, we'll be doing a simple deployment of AKS in each region. For this demo I'll be using Azure regions East US 2 and West US 2. 
 
+> NOTE: I'm using the Azure Cloud Shell for all of my CLI commands
+
 
 
 
