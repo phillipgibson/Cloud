@@ -19,6 +19,21 @@ Since I'm highlighting AFD functionality, we'll be doing a simple deployment of 
 
 First thing we'll do is create two Service Principles for the two AKS clusters
 
-`This is a test`
+`
+az ad sp create-for-rbac -n demo-adf-aks-eastus2-cluster --skip-assignment
+az ad sp create-for-rbac -n demo-adf-aks-westus2-cluster --skip-assignment
+`
+Please take note of the output of the service principles created. We will be using both the appId and password properties in later commands. You should see output similar to this below for each command. 
+
+`
+{
+ "appID": "8cea7e76-0cda-45d2-a62b-bf75dfb8da91",
+ "displayName": "demo-adf-aks-eastus2-cluster",
+ "name": "http://demo-adf-aks-eastus2-cluster",
+ "password": "9a7beaa9-902a-42ac-b03b-f9b4590c2190",
+ "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
+}
+`
+> NOTE: Yes that information is fake :)
 
 
