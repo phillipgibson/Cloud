@@ -90,6 +90,25 @@ We also need to identify the specific subnet in the VNet where the AKS cluster w
 ```
 SUBNET_ID=$(az network vnet subnet show --resource-group demo-adf-aks-eastus2-cluster --vnet-name demo-adf-aks-eastus2-cluster-vnet --name demo-adf-aks-eastus2-cluster-aks-subnet --query id -o tsv)
 ```
-
+Now we're ready to deploy the AKS cluster in the Azure East US 2 region. 
+```
+az aks create \ 
+  --resource-group demo-adf-aks-eastus2-cluster \ 
+  --name demo-adf-aks-eastus2-cluster \ 
+  --kubernetes-version 1.12.6 \ 
+  --node-count 1 \ 
+  --node-vm-size Standard_B2s \
+  --generate-ssh-keys \ 
+  --network-plugin azure \
+  --network-policy calico \ 
+  --service-cidr 10.50.2.0/24 \ 
+  --dns-service-ip 10.50.2.10 \ 
+  --docker-bridge-address 172.17.0.1/16 \ 
+  --vnet-subnet-id $SUBNET_ID \ 
+  --service-principal 8cea7e76-0cda-45d2-a62b-bf75dfb8da91 \ 
+  --client-secret 9a7beaa9-902a-42ac-b03b-f9b4590c2190 \
+  --no-wait 
+  ```
+  
 
 
