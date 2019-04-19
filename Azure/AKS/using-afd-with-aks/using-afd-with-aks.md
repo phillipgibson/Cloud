@@ -17,6 +17,8 @@ Since I'm highlighting AFD functionality, we'll be doing a simple deployment of 
 
 > NOTE: I'm using the Azure Cloud Shell for all of my CLI commands
 
+First thing we'll do is create two Service Principles for the two AKS clusters
 
+`This is a test`
 
 
