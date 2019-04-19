@@ -100,7 +100,7 @@ az aks create \
   --node-vm-size Standard_B2s \
   --generate-ssh-keys \ 
   --network-plugin azure \
-  --network-policy calico \ 
+  --network-policy azure \ 
   --service-cidr 10.50.2.0/24 \ 
   --dns-service-ip 10.50.2.10 \ 
   --docker-bridge-address 172.17.0.1/16 \ 
