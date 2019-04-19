@@ -19,24 +19,24 @@ Since I'm highlighting AFD functionality, we'll be doing a simple deployment of 
 
 First thing we'll do is create two Service Principles for the two AKS clusters
 ```
-az ad sp create-for-rbac -n demo-adf-aks-eastus2-cluster --skip-assignment
-az ad sp create-for-rbac -n demo-adf-aks-westus2-cluster --skip-assignment
+az ad sp create-for-rbac -n demo-afd-aks-eastus2-cluster --skip-assignment
+az ad sp create-for-rbac -n demo-afd-aks-westus2-cluster --skip-assignment
 ```
 
 Please take note of the output of the service principles created. We will be using both the appId and password properties in later commands. You should see output similar to this below for each command. 
 ```
 {
  "appID": "8cea7e76-0cda-45d2-a62b-bf75dfb8da91",
- "displayName": "demo-adf-aks-eastus2-cluster",
- "name": "http://demo-adf-aks-eastus2-cluster",
+ "displayName": "demo-afd-aks-eastus2-cluster",
+ "name": "http://demo-afd-aks-eastus2-cluster",
  "password": "9a7beaa9-902a-42ac-b03b-f9b4590c2190",
  "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
 }
 
 {
  "appID": "ec1bc114-f7e0-4ed6-8a5c-80eb6e9d3856",
- "displayName": "demo-adf-aks-westus2-cluster",
- "name": "http://demo-adf-aks-westus2-cluster",
+ "displayName": "demo-afd-aks-westus2-cluster",
+ "name": "http://demo-afd-aks-westus2-cluster",
  "password": "26482765-da5f-46e5-acf9-fb58675b5533",
  "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
 }
@@ -45,8 +45,8 @@ Please take note of the output of the service principles created. We will be usi
 
 Now create two resource groups. One for each Azure Region
 ```
-az group create -l eastus2 -n demo-adf-aks-eastus2-cluster
-az group create -l westus2 -n demo-adf-aks-westus2-cluster
+az group create -l eastus2 -n demo-afd-aks-eastus2-cluster
+az group create -l westus2 -n demo-afd-aks-westus2-cluster
 ```
 
 We will now create the Azure Virtual Networks for each Azure Region
@@ -54,10 +54,10 @@ We will now create the Azure Virtual Networks for each Azure Region
 For the Azure East US 2 Region
 ```
 az network vnet create \
- -g demo-adf-aks-eastus2-cluster \
- -n demo-adf-aks-eastus2-cluster-vnet \
+ -g demo-afd-aks-eastus2-cluster \
+ -n demo-afd-aks-eastus2-cluster-vnet \
  --address-prefixes 10.50.0.0/16 \
- --subnet-name demo-adf-aks-eastus2-cluster-aks-subnet \ 
+ --subnet-name demo-afd-aks-eastus2-cluster-aks-subnet \ 
  --subnet-prefix 10.50.1.0/24
  ```
  
@@ -66,35 +66,35 @@ We're going to create two additional subnets in each VNet. I like to create a su
 Create the Additional Subnet for the AKS Service Range
 ```
 az network vnet subnet create \
- -g demo-adf-aks-eastus2-cluster \
- --vnet-name demo-adf-aks-eastus2-cluster-vnet \
- --name demo-adf-aks-eastus2-cluster-vnet-akssvc-subnet \
+ -g demo-afd-aks-eastus2-cluster \
+ --vnet-name demo-afd-aks-eastus2-cluster-vnet \
+ --name demo-afd-aks-eastus2-cluster-vnet-akssvc-subnet \
  --address-prefix 10.50.2.0/24
 ```
 Create the Additional Subnet for the Azure Firewall
 > **PLEASE NOTE:** The name of the subnet for the Azure Firewall has to be named "azurefirewallsubnet". Failure to name the subnet the correct name will result in an error when you try to deploy the Azure Firewall to that subnet.
 ```
 az network vnet subnet create \
- -g demo-adf-aks-eastus2-cluster \
- --vnet-name demo-adf-aks-eastus2-cluster-vnet \
+ -g demo-afd-aks-eastus2-cluster \
+ --vnet-name demo-afd-aks-eastus2-cluster-vnet \
  --name azurefirewallsubnet \
  --address-prefix 10.50.0.0/24
 ``` 
 
 Before we can deploy the AKS cluster, we need to add the contributor role to the service principle for the Azure Vnet we created. Make sure you are using the appID from the service principle as the assignee parameter when assigning the role.
 ```
-VNETID=$(az network vnet show -g demo-adf-aks-eastus2-cluster --name demo-adf-aks-eastus2-cluster-vnet --query id -o tsv)
+VNETID=$(az network vnet show -g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-cluster-vnet --query id -o tsv)
 az role assignment create --assignee 8cea7e76-0cda-45d2-a62b-bf75dfb8da91 --scope $VNETID --role Contributor
 ```
 We also need to identify the specific subnet in the VNet where the AKS cluster will be deployed.
 ```
-SUBNET_ID=$(az network vnet subnet show --resource-group demo-adf-aks-eastus2-cluster --vnet-name demo-adf-aks-eastus2-cluster-vnet --name demo-adf-aks-eastus2-cluster-aks-subnet --query id -o tsv)
+SUBNET_ID=$(az network vnet subnet show --resource-group demo-afd-aks-eastus2-cluster --vnet-name demo-afd-aks-eastus2-cluster-vnet --name demo-afd-aks-eastus2-cluster-aks-subnet --query id -o tsv)
 ```
 Now we're ready to deploy the AKS cluster in the Azure East US 2 region. 
 ```
 az aks create \ 
-  --resource-group demo-adf-aks-eastus2-cluster \ 
-  --name demo-adf-aks-eastus2-cluster \ 
+  --resource-group demo-afd-aks-eastus2-cluster \ 
+  --name demo-afd-aks-eastus2-cluster \ 
   --kubernetes-version 1.12.6 \ 
   --node-count 1 \ 
   --node-vm-size Standard_B2s \
@@ -114,36 +114,36 @@ az aks create \
   ```
   # Create the WestUS 2 AKS Cluster VNet
 az network vnet create \
- -g demo-adf-aks-westus2-cluster \
- -n demo-adf-aks-westus2-cluster-vnet \
+ -g demo-afd-aks-westus2-cluster \
+ -n demo-afd-aks-westus2-cluster-vnet \
  --address-prefixes 10.60.0.0/16 \
- --subnet-name demo-adf-aks-westus2-cluster-aks-subnet \ 
+ --subnet-name demo-afd-aks-westus2-cluster-aks-subnet \ 
  --subnet-prefix 10.60.1.0/24
 
 # Create the Additional VNet Subnets for the AKS Service Range and Azure Firewall
 az network vnet subnet create \
- -g demo-adf-aks-westus2-cluster \
- --vnet-name demo-adf-aks-westus2-cluster-vnet \
- --name demo-adf-aks-westus2-cluster-vnet-akssvc-subnet \
+ -g demo-afd-aks-westus2-cluster \
+ --vnet-name demo-afd-aks-westus2-cluster-vnet \
+ --name demo-afd-aks-westus2-cluster-vnet-akssvc-subnet \
  --address-prefix 10.60.2.0/24
 
 az network vnet subnet create \
- -g demo-adf-aks-westus2-cluster \
- --vnet-name demo-adf-aks-westus2-cluster-vnet \
+ -g demo-afd-aks-westus2-cluster \
+ --vnet-name demo-afd-aks-westus2-cluster-vnet \
  --name azurefirewallsubnet \
  --address-prefix 10.60.0.0/24
 
 # Assign the West US 2 Service Principle Contributor Role to the AKS VNet
-VNETID=$(az network vnet show -g demo-adf-aks-westus2-cluster --name demo-adf-aks-westus2-cluster-vnet --query id -o tsv)
+VNETID=$(az network vnet show -g demo-afd-aks-westus2-cluster --name demo-afd-aks-westus2-cluster-vnet --query id -o tsv)
 az role assignment create --assignee ec1bc114-f7e0-4ed6-8a5c-80eb6e9d3856 --scope $VNETID --role Contributor
 
 # Identify the AKS Cluster Subnet for Deployment
-SUBNET_ID=$(az network vnet subnet show --resource-group demo-adf-aks-westus2-cluster --vnet-name demo-adf-aks-westus2-cluster-vnet --name demo-adf-aks-westus2-cluster-aks-subnet --query id -o tsv)
+SUBNET_ID=$(az network vnet subnet show --resource-group demo-afd-aks-westus2-cluster --vnet-name demo-afd-aks-westus2-cluster-vnet --name demo-afd-aks-westus2-cluster-aks-subnet --query id -o tsv)
 
 # Deploy the West US 2 AKS Cluster
 az aks create \ 
-  --resource-group demo-adf-aks-westus2-cluster \ 
-  --name demo-adf-aks-westus2-cluster \ 
+  --resource-group demo-afd-aks-westus2-cluster \ 
+  --name demo-afd-aks-westus2-cluster \ 
   --kubernetes-version 1.12.6 \ 
   --node-count 1 \ 
   --node-vm-size Standard_B2s \
@@ -161,10 +161,10 @@ az aks create \
 
 We now have two AKS clusters up and running in both the East US 2 and West US 2 Azure Regions. You can verify the AKS clusters are ready by getting the credentials and ensuring the nodes are in a ready status.
 ```
-az aks get-credentials -n demo-adf-aks-eastus2-cluster -g demo-adf-aks-eastus2-cluster
+az aks get-credentials -n demo-afd-aks-eastus2-cluster -g demo-afd-aks-eastus2-cluster
 kubectl get nodes
 
-az aks get-credentials -n demo-adf-aks-westus2-cluster -g demo-adf-aks-westus2-cluster
+az aks get-credentials -n demo-afd-aks-westus2-cluster -g demo-afd-aks-westus2-cluster
 kubectl get nodes
 ```
 
@@ -173,7 +173,7 @@ Now let's deploy a simple Node.js app to each cluster. Each app is personalized 
 
 For the Azure East US 2 deployment use the following:
 ```
-kubectl config use-context demo-adf-aks-eastus2-cluster
+kubectl config use-context demo-afd-aks-eastus2-cluster
 kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-eastus2-elb-app.yaml
 ```
 Verify the deployed app has received a public IP and then browse to that endpoint.
@@ -186,7 +186,7 @@ kubectl get svc
 
 Repeat the same deployment for the West US 2 AKS cluster and verify you can browse to the endpoint.
 ```
-kubectl config use-context demo-adf-aks-westus2-cluster
+kubectl config use-context demo-afd-aks-westus2-cluster
 kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
 kubectl get svc
 ```
@@ -199,7 +199,7 @@ Now we'll tie it all together and use AFD as a global endpoint for the two AKS s
 
 Create a resource group for the AFD instance. This will seem wierd because your first instinct is to think that AFD is a regional service and will be tied to the availablity of the Azure region where the resource group gets deployed to. AFD is a global service, just like Azure Traffic Manager, and we must just associate it to a region for the ARM deployment.
 ```
-az group create -l eastus2 -n demo-adf-aks-global
+az group create -l eastus2 -n demo-afd-aks-global
 ```
 Most likely if this is your first time using AFD you will need to install the Azure CLI extension, even when using Azure Cloud Shell
 ```
