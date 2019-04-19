@@ -86,7 +86,10 @@ Before we can deploy the AKS cluster, we need to add the contributor role to the
 VNETID=$(az network vnet show -g demo-adf-aks-eastus2-cluster --name demo-adf-aks-eastus2-cluster-vnet --query id -o tsv)
 az role assignment create --assignee 8cea7e76-0cda-45d2-a62b-bf75dfb8da91 --scope $VNETID --role Contributor
 ```
-
+We also need to identify the specific subnet in the VNet where the AKS cluster will be deployed.
+```
+SUBNET_ID=$(az network vnet subnet show --resource-group demo-adf-aks-eastus2-cluster --vnet-name demo-adf-aks-eastus2-cluster-vnet --name demo-adf-aks-eastus2-cluster-aks-subnet --query id -o tsv)
+```
 
 
 
