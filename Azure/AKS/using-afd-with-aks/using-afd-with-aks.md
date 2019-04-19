@@ -48,5 +48,14 @@ We will now create the Azure Virtual Networks for each Azure Region
 
 For the Azure East US 2 Region
 
-
+```
+az network vnet create \
+ -g demo-adf-aks-eastus2-cluster \
+ -n demo-adf-aks-eastus2-cluster-vnet \
+ --address-prefixes 10.50.0.0/16 \
+ --subnet-name demo-adf-aks-eastus2-cluster-aks-subnet \ 
+ --subnet-prefix 10.50.1.0/24
+ ```
+We're going to create two additional subnets in each VNet. I like to create a subnet specific to the AKS service range. I do this so that if I try to use that range in Azure somewhere else, Azure will tell me that it is in use, so I won't have any conflict with other devices. We are also going to make a Azure Firewall subnet. This will be used to show you an additional configuration of using the Azure Firewall's public IP to NAT back to a AKS service that is using an internal load balancer. 
+ 
 
