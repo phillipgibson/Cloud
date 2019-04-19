@@ -41,7 +41,7 @@ Please take note of the output of the service principles created. We will be usi
  "tenant": "f8e558d3-585d-4e8c-a1e7-f1714db18835"
 }
 ```
-> NOTE: Yes that information is fake :)
+> NOTE: Of course these service principles are fake :)
 
 Now create two resource groups. One for each Azure Region
 ```
