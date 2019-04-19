@@ -180,3 +180,6 @@ Verify the deployed app has received a public IP and then browse to that endpoin
 ```
 kubectl get svc
 ```
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-kubectl.png)
+
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-browser.png)
