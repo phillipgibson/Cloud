@@ -33,7 +33,13 @@ Please take note of the output of the service principles created. We will be usi
  "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
 }
 
-
+{
+ "appID": "ec1bc114-f7e0-4ed6-8a5c-80eb6e9d3856",
+ "displayName": "demo-adf-aks-westus2-cluster",
+ "name": "http://demo-adf-aks-westus2-cluster",
+ "password": "26482765-da5f-46e5-acf9-fb58675b5533",
+ "tenant": "f8e558d3-585d-4e8c-a1e7-f1714db18835"
+}
 ```
 > NOTE: Yes that information is fake :)
 
