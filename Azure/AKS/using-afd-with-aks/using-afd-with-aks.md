@@ -41,7 +41,7 @@ Please take note of the output of the service principles created. We will be usi
  "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
 }
 ```
-> NOTE: Yes, all the service principles information is fake :)
+> NOTE: Yes, all the service principle information listed here is fake :)
 
 Now create two resource groups. One for each Azure Region
 ```
@@ -183,3 +183,9 @@ kubectl get svc
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-kubectl.png)
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-browser.png)
+
+We will repeat the same deployment for the West US 2 AKS cluster
+```
+kubectl config use-context demo-adf-aks-westus2-cluster
+kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
+```
