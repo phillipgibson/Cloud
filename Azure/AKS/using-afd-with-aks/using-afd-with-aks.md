@@ -32,6 +32,8 @@ Please take note of the output of the service principles created. We will be usi
  "password": "9a7beaa9-902a-42ac-b03b-f9b4590c2190",
  "tenant": "f1d38a10-7214-4702-b571-8a1b70718c42"
 }
+
+
 ```
 > NOTE: Yes that information is fake :)
 
@@ -72,5 +74,13 @@ az network vnet subnet create \
  --name azurefirewallsubnet \
  --address-prefix 10.50.0.0/24
 ``` 
+
+Before we can deploy the AKS cluster, we need to add the contributor role to the service principle for the Azure Vnet we created. Make sure you are using the appID from the service principle as the assignee parameter when assigning the role.
+```
+VNETID=$(az network vnet show -g demo-adf-aks-eastus2-cluster --name demo-adf-aks-eastus2-cluster-vnet --query id -o tsv)
+az role assignment create --assignee 8cea7e76-0cda-45d2-a62b-bf75dfb8da91 --scope $VNETID --role Contributor
+```
+
+
 
 
