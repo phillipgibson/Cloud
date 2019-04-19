@@ -37,4 +37,16 @@ Please take note of the output of the service principles created. We will be usi
 ```
 > NOTE: Yes that information is fake :)
 
+Now create two resource groups. One for each Azure Region
+
+```
+az group create -l eastus2 -n demo-adf-aks-eastus2-cluster
+az group create -l eastus2 -n demo-adf-aks-westus2-cluster
+```
+
+We will now create the Azure Virtual Networks for each Azure Region
+
+For the Azure East US 2 Region
+
+
 
