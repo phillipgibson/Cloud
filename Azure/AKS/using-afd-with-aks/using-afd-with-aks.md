@@ -64,7 +64,7 @@ az network vnet subnet create \
  --address-prefix 10.50.2.0/24
 ```
 Create the Additional Subnet for the Azure Firewall
-> **PLEASE NOTE: The name of the subnet for the Azure Firewall has to be named "azurefirewallsubnet". Failure to name the subnet the correct name will result in an error when you try to deploy the Azure Firewall to that subnet.
+> **PLEASE NOTE:** The name of the subnet for the Azure Firewall has to be named "azurefirewallsubnet". Failure to name the subnet the correct name will result in an error when you try to deploy the Azure Firewall to that subnet.
 ```
 az network vnet subnet create \
  -g demo-adf-aks-eastus2-cluster \
