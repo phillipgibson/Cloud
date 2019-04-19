@@ -169,9 +169,14 @@ kubectl get nodes
 ```
 
 ## Deploy the Sample Applications to each AKS Cluster
-Now let's deploy a simple Node.js app to each cluster. Each app is personalized for the Azure region it will be deployed to.
+Now let's deploy a simple Node.js app to each cluster. Each app is personalized for the Azure region it will be deployed to. For this round we'll be using the deployment that creates a public IP address for the service. 
 
 For the Azure East US 2 deployment use the following:
 ```
-
+kubectl config use-context demo-adf-aks-eastus2-cluster
+kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-eastus2-elb-app.yaml
+```
+Verify the deployed app has received a public IP and then browse to that endpoint.
+```
+kubectl get svc
 ```
