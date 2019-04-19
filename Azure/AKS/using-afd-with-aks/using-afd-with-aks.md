@@ -188,8 +188,13 @@ Repeat the same deployment for the West US 2 AKS cluster and verify you can brow
 ```
 kubectl config use-context demo-adf-aks-westus2-cluster
 kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
+kubectl get svc
 ```
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-kubectl.png)
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-browser.png)
+
+## Deploy the Azure Front Door Service
+Now we're ready to tie it all together and use AFD as a global endpoint for the two AKS services running in seperate Azure Regions (EastUS2 and WestUS2)
+
 
