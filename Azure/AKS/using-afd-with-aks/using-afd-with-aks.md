@@ -110,5 +110,56 @@ az aks create \
   --no-wait 
   ```
   
+  We'll build the exact same AKS cluster in Azure West US 2 Region. We already have the Resource Group and Service Principle created. 
+  ```
+  # Create the WestUS 2 AKS Cluster VNet
+az network vnet create \
+ -g demo-adf-aks-westus2-cluster \
+ -n demo-adf-aks-westus2-cluster-vnet \
+ --address-prefixes 10.60.0.0/16 \
+ --subnet-name demo-adf-aks-westus2-cluster-aks-subnet \ 
+ --subnet-prefix 10.60.1.0/24
 
+# Create the Additional VNet Subnets for the AKS Service Range and Azure Firewall
+az network vnet subnet create \
+ -g demo-adf-aks-westus2-cluster \
+ --vnet-name demo-adf-aks-westus2-cluster-vnet \
+ --name demo-adf-aks-westus2-cluster-vnet-akssvc-subnet \
+ --address-prefix 10.60.2.0/24
+
+az network vnet subnet create \
+ -g demo-adf-aks-westus2-cluster \
+ --vnet-name demo-adf-aks-westus2-cluster-vnet \
+ --name azurefirewallsubnet \
+ --address-prefix 10.60.0.0/24
+
+# Assign the West US 2 Service Principle Contributor Role to the AKS VNet
+VNETID=$(az network vnet show -g demo-adf-aks-westus2-cluster --name demo-adf-aks-westus2-cluster-vnet --query id -o tsv)
+az role assignment create --assignee ec1bc114-f7e0-4ed6-8a5c-80eb6e9d3856 --scope $VNETID --role Contributor
+
+# Identify the AKS Cluster Subnet for Deployment
+SUBNET_ID=$(az network vnet subnet show --resource-group demo-adf-aks-westus2-cluster --vnet-name demo-adf-aks-westus2-cluster-vnet --name demo-adf-aks-westus2-cluster-aks-subnet --query id -o tsv)
+
+# Deploy the West US 2 AKS Cluster
+az aks create \ 
+  --resource-group demo-adf-aks-westus2-cluster \ 
+  --name demo-adf-aks-westus2-cluster \ 
+  --kubernetes-version 1.12.6 \ 
+  --node-count 1 \ 
+  --node-vm-size Standard_B2s \
+  --generate-ssh-keys \ 
+  --network-plugin azure \
+  --network-policy azure \ 
+  --service-cidr 10.60.2.0/24 \ 
+  --dns-service-ip 10.60.2.10 \ 
+  --docker-bridge-address 172.17.0.1/16 \ 
+  --vnet-subnet-id $SUBNET_ID \ 
+  --service-principal ec1bc114-f7e0-4ed6-8a5c-80eb6e9d3856 \ 
+  --client-secret 26482765-da5f-46e5-acf9-fb58675b5533 \
+  --no-wait
+  ```
+
+We Now have Two AKS Clusters Up and Running in both the East US 2 and West US 2 Azure Regions
+
+## Deploy the Sample Applications to each AKS Cluster
 
