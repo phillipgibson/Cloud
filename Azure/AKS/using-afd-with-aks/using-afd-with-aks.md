@@ -267,6 +267,8 @@ You will need to repeat those steps for every AKS cluster service you have confi
 The only thing left to do now is to test AFD's global loadbalancing feature. You can do this easily by just stopping the cluster node(s) VM to simulate an outage for that region. Browsing the AFD endpoint, you should immediately see the browser pick up the West US 2 AKS service endpoint. You can then test it in reverse by starting back up the East US 2 AKS cluster node and then stoping the West US 2 AKS cluster node. 
 
 ## Using AFD with Azure Firewall to Expose a Interally (Private VNet IP) Load Balanced AKS Service
+In the previous pattern, we created two AKS services in the East US 2 and West US 2 region using the default LoadBalancer option which exposes our AKS services with a public IP address. We then added the AKS services endpoints as backend pool host for AFD. In the following pattern, described in the following graphic, we will deploy the same AKS services in both regions again, but we will only expose them to the VNet using the internal load balancer annotation. To then expose the intenral AKS service to the internet we will use the Azure Firewall to NAT its public IP back to the internal AKS service IP. From there the AFD configuration is similar to the previous pattern. Only this time we will configure the AFD backend pool with the public IP addresses of the Azure Firewall in each region.
 
+> **NOTE:** Please be aware that the Azure Firewall comes with an additional cost
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/afd-aks-azfirewall-arch.png)
