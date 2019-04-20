@@ -272,3 +272,15 @@ In the previous pattern, we created two AKS services in the East US 2 and West U
 > **NOTE:** Please be aware that the Azure Firewall comes with an additional cost
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/afd-aks-azfirewall-arch.png)
+
+If you're continuing from the previous deployment, let's go ahead and remove both region's AKS services and the AFD backend pool.
+
+```
+kubectl config use-context demo-afd-aks-eastus2-cluster
+kubectl delete -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-eastus2-elb-app.yaml
+kubectl get svc   # The demo service for the EastUS 2 region should now be deleted
+kubectl config use-context demo-afd-aks-westus2-cluster
+kubectl delete -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
+kubectl get svc   # The demo service for the WestUS 2 region should now be deleted
+
+```
