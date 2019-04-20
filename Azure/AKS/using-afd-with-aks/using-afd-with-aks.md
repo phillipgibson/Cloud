@@ -230,4 +230,8 @@ az network front-door create \
  --address 52.183.68.177 \
  --backend-host-header 52.183.68.177
  ```
+You can now check that your backends have been configured
+```
+az network front-door backend-pool list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].backends' -o json
+```
 
