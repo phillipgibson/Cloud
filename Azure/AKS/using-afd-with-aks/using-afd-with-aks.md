@@ -214,13 +214,20 @@ No we'll deploy AFD with the inital backend of the AKS service located in the Ea
 az network front-door create \
  -n demoafdaks \
  -g demo-afd-aks-global \
- --friendly-name myafdaksdemo \
  --backend-address 40.84.40.122 \
  --backend-host-header 40.84.40.122 \
  --protocol Http \
  --forwarding-protocol HttpOnly
  ```
- > NOTE: The CLI name parameter is the name you will give the AFD instance in the Azure portal. The friendly-name is the actual domain name that will get created appended by appended by .azurefd.net. The friendly-name parameter has to be unique to the .azurefd.net domain. I also could not figure out how to initially name the backend pool and routing rule configuration using the CLI. When using the portal/UI you do have this option. For now the backend pool and routing rule configuration names will be DefaultBackendPool and DefaultRoutingRule.
+ > NOTE: I could not figure out how to initially name the backend pool and routing rule configuration using the CLI. When using the portal/UI you do have this option. For now the backend pool and routing rule configuration names will be DefaultBackendPool and DefaultRoutingRule.
  
- 
+ Next is to add the AKS service endpoint from the West US 2 Azure datacenter to the backend pool for AFD
+ ```
+ az network front-door backend-pool backend add \
+ --resource-group demo-afd-aks-global \
+ --front-door-name demoafdaks \
+ --pool-name DefaultBackendPool \
+ --address 52.183.68.177 \
+ --backend-host-header 52.183.68.177
+ ```
 
