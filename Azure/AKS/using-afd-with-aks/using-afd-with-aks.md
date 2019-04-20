@@ -207,4 +207,20 @@ az extension add --name front-door
 ```
 > NOTE: At the time of this writing the AFD Azure CLI extension is in preview
 
+AFD has a lot of configuration options for the backend pools and routing rules. Since we're just hosting a simple web application we'll keep this deployment configuration simple. I'll be cicle back on another post to show off some of the URL rewite features and how you can take advantage of that with AKS for building out microservices.
+
+No we'll deploy AFD with the inital backend of the AKS service located in the East US 2 Azure datacenter.
+```
+az network front-door create \
+ -n demoafdaks \
+ -g demo-afd-aks-global \
+ --friendly-name myafdaksdemo \
+ --backend-address 40.84.40.122 \
+ --backend-host-header 40.84.40.122 \
+ --protocol Http \
+ --forwarding-protocol HttpOnly
+ ```
+ > NOTE: The CLI name parameter is the name you will give the AFD instance in the Azure portal. The friendly-name is the actual domain name that will get created appended by appended by .azurefd.net. The friendly-name parameter has to be unique to the .azurefd.net domain. I also could not figure out how to initially name the backend pool and routing rule configuration using the CLI. When using the portal/UI you do have this option. For now the backend pool and routing rule configuration names will be DefaultBackendPool and DefaultRoutingRule.
+ 
+ 
 
