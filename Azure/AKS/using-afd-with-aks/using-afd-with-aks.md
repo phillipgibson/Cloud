@@ -264,4 +264,4 @@ You will need to repeat those steps for every AKS cluster service, and you shoul
 
 The only thing left to do now is to test AFD's global loadbalancing feature. You can do this easily by just stopping the cluster node VM to simulate an outage for that region. Browsing the AFD endpoint, you should immediately see the browser pick up the West US 2 AKS service endpoint. You can then test it in reverse by starting back up the East US 2 AKS cluster node and then stoping the West US 2 AKS cluster node. 
 
-## Coming Soon: Using AFD with Azure Firewall to Expose a Interal Load Balancer AKS Service
+## Coming Soon: Using AFD with Azure Firewall to Expose a Interally (Private VNet IP) Load Balanced AKS Service
