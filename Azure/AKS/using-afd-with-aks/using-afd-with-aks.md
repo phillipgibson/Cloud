@@ -4,11 +4,11 @@ Recently we [announced](https://azure.microsoft.com/en-us/blog/azure-front-door-
 ## Understanding the options for AKS with Azure's Application Delivery Suite
 So if you take a look at the current documentation concerning [AKS BC/DR strategy]( https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-multi-region ), specifically the network ingress flow for a multi-region cluster deployment of an AKS service, you will see that Azure Traffic Manager is load balancing the global DNS-based traffic. Downstream from the Traffic Manager service are network appliances (NVA). These NVAs most likely will be an Azure Application Gateway, or similar Azure Marketplace device,  to provide any WAF and session affinity needs. 
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-azure-traffic-manager.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-azure-traffic-manager.png)
 
 Depending on your application needs, there is a variety of ways and possibilities of exposing your web applications. You can explore these options in more detail with this article on [Building with Azure's application delivery suite](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-lb-with-azure-app-delivery-suite#building-with-azures-application-delivery-suite). For the purposes of this walkthrough, we will be using ADF to load balance the global DNS-based traffic and http traffic between two Azure regions with identical AKS services deployed. I did personalize each AKS service so that the web page of each application identifies the Azure region the application is hosted in. This will allow us to see the live region servicing the application when we take the service offline in each region's AKS cluster. AFD will provide global high availablity by building a backend pool containing both public IPs of the AKS services in each region. 
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-azure-front-door.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-azure-front-door.png)
 
 As you can tell, using AFD has already streamlined the architecture. Typical patterns would have a deployment of an Application Gateway in each region downstream from the global DNS traffic service. Remember that Azure Application Gateway is a regional service, so you would have to deploy it N number of times per region hosting your application. With using AFD I have eliminated the use of Azure Traffic Manager for global DNS-based traffic, and I'm able to push the functionality provied by Azure Application Gateway upstream to AFD providing me WAF, layer 7 path/url routing, and session state configuration. 
 
@@ -180,9 +180,9 @@ Verify the deployed app has received a public IP and then browse to that endpoin
 ```
 kubectl get svc
 ```
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-kubectl.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-eastus2-app-kubectl.png)
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-eastus2-app-browser.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-eastus2-app-browser.png)
 
 Repeat the same deployment for the West US 2 AKS cluster and verify you can browse to the endpoint.
 ```
@@ -190,9 +190,9 @@ kubectl config use-context demo-afd-aks-westus2-cluster
 kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
 kubectl get svc
 ```
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-kubectl.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-westus2-app-kubectl.png)
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-browser.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-westus2-app-browser.png)
 
 Make note of both the external public IP address of both your AKS services endpoints in each Azure region. We will use them to configure the backend configuration of the AFD service.
 
@@ -244,10 +244,10 @@ Before we call this complete, there's one last thing we need to do from a harden
 
 The AFD FAQ already has this process documented and on the roadmap for NSGs will be a specific service tag for AFD which will make this even easier to configure. For right now we simply just need to configure our AKS service NSGs to only accept traffic from the AFD IPv4 CIRD of 147.243.0.0/16. More details on this can be found here https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door-service. 
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-identify-nsg.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-identify-nsg.png)
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-default-nsg-config.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-default-nsg-config.png)
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-afd-nsg-config.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-afd-nsg-config.png)
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-afd-nsg-config-complete.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-afd-nsg-config-complete.png)
