@@ -244,4 +244,10 @@ Before we call this complete, there's one last thing we need to do from a harden
 
 The AFD FAQ already has this process documented and on the roadmap for NSGs will be a specific service tag for AFD which will make this even easier to configure. For right now we simply just need to configure our AKS service NSGs to only accept traffic from the AFD IPv4 CIRD of 147.243.0.0/16. More details on this can be found here https://docs.microsoft.com/en-us/azure/frontdoor/front-door-faq#how-do-i-lock-down-the-access-to-my-backend-to-only-azure-front-door-service. 
 
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-identify-nsg.png)
 
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-default-nsg-config.png)
+
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-afd-nsg-config.png)
+
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-svc-afd-nsg-config-complete.png)
