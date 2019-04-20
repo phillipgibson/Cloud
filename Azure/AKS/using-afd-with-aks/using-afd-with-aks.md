@@ -209,7 +209,7 @@ az extension add --name front-door
 ```
 > NOTE: At the time of this writing the AFD Azure CLI extension is in preview
 
-AFD has a lot of configuration options for the backend pools and routing rules. Since we're just hosting a simple web application we'll keep this deployment configuration simple. I'll be cicle back on another post to show off some of the URL rewite features and how you can take advantage of that with AKS for building out microservices.
+AFD has a lot of configuration options for the backend pools and routing rules. Since we're just hosting a simple web application we'll keep this deployment configuration simple. I'll create additional posts to show off some of the URL rewite features and how you can take advantage of that with AKS for building out microservices routing.
 
 No we'll deploy AFD with the inital backend of the AKS service located in the East US 2 Azure datacenter.
 ```
