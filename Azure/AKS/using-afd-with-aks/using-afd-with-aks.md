@@ -240,4 +240,4 @@ At this point AFD is fully configured and you should be able to query the AFD fr
 ```
 az network front-door frontend-endpoint list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].hostName' -o json
 ```
-
+Before we call this complete, there's one last thing we need to do from a hardening perspective to ensure we're funneling all internet traffic to our AKS services endpoint from AFD. Right now the configuration still allows access to the AKS service endpoints via thier external public IP. To ensure that the AKS services endpoints only receive traffic from AFD, we will need to modify the default NSGs created for those services to only accept traffic from the AFD service. 
