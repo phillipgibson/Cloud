@@ -236,4 +236,8 @@ You can now check that your backends have been configured
 ```
 az network front-door backend-pool list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].backends' -o json
 ```
+At this point AFD is fully configured and you should be able to query the AFD frontend host endpoint and be routed to one of the AKS services endpoints in either Azure region via your browser.
+```
+az network front-door frontend-endpoint list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].hostName' -o json
+```
 
