@@ -194,6 +194,8 @@ kubectl get svc
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/aks-afd-verify-westus2-app-browser.png)
 
+Make note of both the external public IP address of both your AKS services endpoints in each Azure region. We will use them to configure the backend configuration of the AFD service.
+
 ## Deploy the Azure Front Door Service
 Now we'll tie it all together and use AFD as a global endpoint for the two AKS services running in seperate Azure Regions (EastUS2 and WestUS2)
 
