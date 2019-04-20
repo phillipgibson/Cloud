@@ -249,12 +249,15 @@ Locate the NSG of the AKS service. This will be found in the MC_* resource group
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-identify-nsg.png)
 
 In the properties of the NSG rule you will notice that it is using the Service Tag Internet as the accepting source. This configuration is what allows traffic from anyone on the internet to the AKS service and will need to be changed to only accept traffic from the AFD service.
+
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-default-nsg-config.png)
 
 Change the Source option to IP Addresses and in the Source IP addresses/CIDR ranges property enter the AFD service CIDR range of 147.243.0.0/16 and save the configuration.
+
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-afd-nsg-config.png)
 
 You should now see the updated configuration of the NSG in the inbound security rules.
+
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-afd-nsg-config-complete.png)
 
 You will need to repeat those steps for every AKS cluster service, and you should now not be able to go directly to the AKS service endpoint and only be able to view the AKS service endpoints through the AFD service. 
