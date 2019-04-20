@@ -261,3 +261,7 @@ You should now see the updated configuration of the NSG in the inbound security 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-svc-afd-nsg-config-complete.png)
 
 You will need to repeat those steps for every AKS cluster service, and you should now not be able to go directly to the AKS service endpoint and only be able to view the AKS service endpoints through the AFD service. 
+
+The only thing left to do now is to test AFD's global loadbalancing feature. You can do this easily by just stopping the cluster node VM to simulate an outage for that region. Browsing the AFD endpoint, you should immediately see the browser pick up the West US 2 AKS service endpoint. You can then test it in reverse by starting back up the East US 2 AKS cluster node and then stoping the West US 2 AKS cluster node. 
+
+
