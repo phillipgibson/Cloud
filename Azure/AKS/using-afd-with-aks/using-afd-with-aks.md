@@ -322,5 +322,5 @@ kubectl get svc
 
 ![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-westus2-app-internal-kubectl.png)
 
-Now we need to deploy an instance of the Azure Firewall in each regions AKS VNet. To expose the internal AKS service to the internet we'll have to configure the NAT rule from the public IP of the Azure Firewall translating back to the AKS service internal IP. We will also need to create a Route Table for the AKS cluster subnet to have its default gateway pointed to the internal IP address of the Azure Firewall. This will ensure symmetrical route is in place. 
+Now we need to deploy an instance of the Azure Firewall in each regions AKS VNet. To expose the internal AKS service to the internet we'll have to configure the NAT rule from the public IP of the Azure Firewall translating back to the AKS service internal IP. We will also need to create a Route Table for the AKS cluster subnet to have its default gateway pointed to the internal IP address of the Azure Firewall. This will ensure the symmetrical route is in place. 
 
