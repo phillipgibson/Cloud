@@ -370,7 +370,9 @@ az network route-table route create \
 
 # Associate EastUS 2 AKS Cluster Subnet to the Azure Firewall
 az network vnet subnet update -g demo-afd-aks-eastus2-cluster \
- --vnet-name demo-afd-aks-eastus2-cluster-vnet --name demo-afd-aks-eastus2-cluster-aks-subnet --route-table demo-afd-aks-eastus2-fw-rtbl
+ --vnet-name demo-afd-aks-eastus2-cluster-vnet \
+ --name demo-afd-aks-eastus2-cluster-aks-subnet \
+ --route-table demo-afd-aks-eastus2-fw-rtbl
  
 # Azure WestUS 2 Region Command(s)
 
