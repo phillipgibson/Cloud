@@ -213,7 +213,7 @@ az extension add --name front-door
 
 AFD has a lot of configuration options for the backend pools and routing rules. Since we're just hosting a simple web application we'll keep this deployment configuration simple. I'll create additional posts to show off some of the URL rewite features and how you can take advantage of that with AKS for building out microservices routing.
 
-No we'll deploy AFD with the inital backend of the AKS service located in the East US 2 Azure datacenter.
+Now we'll deploy AFD with the inital backend of the AKS service located in the East US 2 Azure datacenter.
 ```
 az network front-door create \
  -n demoafdaks \
@@ -396,4 +396,29 @@ You should now be able to access the internal AKS Service in the West US 2 Regio
 ```
 curl $WESTUS2_FWPUBLIC_IP
 ```
+We're close to finalizing this AFD ingress pattern using Azure Firewall to expose internal AKS services. The next thing to do is to add both the public IP addresses from each Azure Firewall to the AFD backend pool. This is exactly the same as we did before using the AKS services public IP addesses. 
 
+Update AFD with the inital backend host with the Azure Firewall public IP address for the East US 2 Azure datacenter.
+```
+az network front-door create \
+ -n demoafdaks \
+ -g demo-afd-aks-global \
+ --backend-address $EASTUS2_FWPUBLIC_IP \
+ --backend-host-header $EASTUS2_FWPUBLIC_IP \
+ --protocol Http \
+ --forwarding-protocol HttpOnly
+ ```
+ 
+ Next is to add the Azure Firewall public IP address from the West US 2 Azure datacenter to the backend pool for AFD
+ ```
+ az network front-door backend-pool backend add \
+ --resource-group demo-afd-aks-global \
+ --front-door-name demoafdaks \
+ --pool-name DefaultBackendPool \
+ --address $WESTUS2_FWPUBLIC_IP \
+ --backend-host-header $WESTUS2_FWPUBLIC_IP
+ ```
+You can now check that your backends have been configured
+```
+az network front-door backend-pool list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].backends' -o json
+```
