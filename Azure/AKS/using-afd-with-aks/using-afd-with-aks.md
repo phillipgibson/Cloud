@@ -340,42 +340,23 @@ az network firewall create -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westu
 ```
 Configure each Azure Region Azure Firewall IP configuration. This will add the public IP address to the Azure Firewall, as well as associate the Azure Firewall to the VNet in each respective Azure Region where it will recieve its private IP address.
 > **NOTE**: This process can take several minutes to configure per Azure Firewall. Please be patient.
+
 ```
-# Azure EastUS 2 Region Command(s)
+# Azure EastUS 2 Region Command
 az network firewall ip-config create -g demo-afd-aks-eastus2-cluster -f demo-afd-aks-eastus2-firewall -n demo-afd-aks-eastus2-fw-config --public-ip-address demo-afd-aks-eastus2-fw-pip --vnet-name demo-afd-aks-eastus2-cluster-vnet
 
-# Azure WestUS 2 Region
+# Azure WestUS 2 Region Command
 az network firewall ip-config create -g demo-afd-aks-westus2-cluster -f demo-afd-aks-westus2-firewall -n demo-afd-aks-westus2-fw-config --public-ip-address demo-afd-aks-westus2-fw-pip --vnet-name demo-afd-aks-westus2-cluster-vnet
 ```
-Create the necessary Route Table (User Defined Route - UDR) to ensure that the internal AKS service routes egress network communication through the Azure Firewall. The Azure CLI command for this needs takes in Azure Subscription ID as well, so we'll need to capture that information too.
+Create the necessary Firewall NAT Rule to map the Firewall Public IP address to the internal AKS Service IP address
 ```
-# Find your Azure Subscription ID
-SUBID=$(az account show -o tsv --query 'id')
-# Verify you have the correct Azure Subscription ID
-echo $SUBID
-
 # Azure EastUS 2 Region Command(s)
-# Get the private IP address of the Azure Firewall
-EASTUS2_FWPRIVATE_IP=$(az network firewall show -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-firewall --query "ipConfigurations[0].privateIpAddress" -o tsv)
-
-# Create Route Table (UDR)
-az network route-table create -g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-fw-rtbl
-
-# Configure Route Table Route
-az network route-table route create \
--g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-fw-dg \
---route-table-name demo-afd-aks-eastus2-fw-rtbl \
---address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance \
---next-hop-ip-address $EASTUS2_FWPRIVATE_IP --subscription $SUBID
-
-# Associate EastUS 2 AKS Cluster Subnet to the Azure Firewall
-az network vnet subnet update -g demo-afd-aks-eastus2-cluster \
---vnet-name demo-afd-aks-eastus2-cluster-vnet \
---name demo-afd-aks-eastus2-cluster-aks-subnet \
---route-table demo-afd-aks-eastus2-fw-rtbl
-
-# Get the public IP address of the Azure Firewall
+# Get the public IP address of the East US 2 Azure Firewall
 EASTUS2_FWPUBLIC_IP=$(az network public-ip show -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-fw-pip --query "ipAddress" -o tsv)
+
+# Make note of the Internal AKS Service IP (The column title says EXTERNAL_IP)
+kubectl config use-context demo-afd-aks-eastus2-cluster
+kubectl get svc
 
 # Create the East US 2 Azure Firewall NAT rule to expose the internal AKS service
 # Please remember to put the AKS service internal IP address as the translated-address parameter value
@@ -386,6 +367,12 @@ az network firewall nat-rule create -g demo-afd-aks-eastus2-cluster \
 --destination-addresses $EASTUS2_FWPUBLIC_IP --destination-ports 80 \
 --translated-address 10.50.1.35 --translated-port 80 \
 --action Dnat --priority 100
+```
+You should now be able to access the internal AKS Service in the East US 2 Region by using a browser or a simple curl command to the East US 2 Azure Firewall public IP address
+```
+curl $EASTUS2_FWPUBLIC_IP
+```
+
  
 # Azure WestUS 2 Region Command(s)
 
