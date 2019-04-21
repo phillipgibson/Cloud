@@ -366,7 +366,7 @@ az network route-table route create \
  -g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-fw-dg \
  --route-table-name demo-afd-aks-eastus2-fw-rtbl \
  --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance \
- --next-hop-ip-address EASTUS2_FWPRIVATE_IP --subscription $SUBID
+ --next-hop-ip-address $EASTUS2_FWPRIVATE_IP --subscription $SUBID
 
 # Associate EastUS 2 AKS Cluster Subnet to the Azure Firewall
 az network vnet subnet update -g demo-afd-aks-eastus2-cluster \
