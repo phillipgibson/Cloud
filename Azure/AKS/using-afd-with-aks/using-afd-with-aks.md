@@ -349,9 +349,29 @@ az network firewall ip-config create -g demo-afd-aks-westus2-cluster -f demo-afd
 ```
 Create the necessary Route Table (User Defined Route - UDR) to ensure that the internal AKS service routes egress network communication through the Azure Firewall. The Azure CLI command for this needs takes in Azure Subscription ID as well, so we'll need to capture that information too.
 ```
+# Find your Azure Subscription ID
+SUBID=$(az account show -o tsv --query 'id')
+# Verify you have the correct Azure Subscription ID
+echo $SUBID
+
 # Azure EastUS 2 Region Command(s)
+# Get the private IP address of the Azure Firewall
+EASTUS2_FWPRIVATE_IP=$(az network firewall show -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-firewall --query "ipConfigurations[0].privateIpAddress" -o tsv)
 
+# Create Route Table (UDR)
+az network route-table create -g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-fw-rtbl
 
+# Configure Route Table Route
+az network route-table route create \
+ -g demo-afd-aks-eastus2-cluster --name demo-afd-aks-eastus2-fw-dg \
+ --route-table-name demo-afd-aks-eastus2-fw-rtbl \
+ --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance \
+ --next-hop-ip-address EASTUS2_FWPRIVATE_IP --subscription $SUBID
+
+# Associate EastUS 2 AKS Cluster Subnet to the Azure Firewall
+az network vnet subnet update -g demo-afd-aks-eastus2-cluster \
+ --vnet-name demo-afd-aks-eastus2-cluster-vnet --name demo-afd-aks-eastus2-cluster-aks-subnet --route-table demo-afd-aks-eastus2-fw-rtbl
+ 
 # Azure WestUS 2 Region Command(s)
 
 ```
