@@ -348,7 +348,7 @@ az network firewall ip-config create -g demo-afd-aks-eastus2-cluster -f demo-afd
 # Azure WestUS 2 Region Command
 az network firewall ip-config create -g demo-afd-aks-westus2-cluster -f demo-afd-aks-westus2-firewall -n demo-afd-aks-westus2-fw-config --public-ip-address demo-afd-aks-westus2-fw-pip --vnet-name demo-afd-aks-westus2-cluster-vnet
 ```
-Create the necessary Firewall NAT Rule to map the Firewall Public IP address to the internal AKS Service IP address
+Create the necessary Firewall NAT Rule to map the Azure Firewall Public IP address to the internal AKS Service IP address for the East US 2 Region
 ```
 # Azure EastUS 2 Region Command(s)
 # Get the public IP address of the East US 2 Azure Firewall
@@ -372,8 +372,24 @@ You should now be able to access the internal AKS Service in the East US 2 Regio
 ```
 curl $EASTUS2_FWPUBLIC_IP
 ```
-
- 
+Create the necessary Firewall NAT Rule to map the Azure Firewall Public IP address to the internal AKS Service IP address for the West US 2 Region
+``` 
 # Azure WestUS 2 Region Command(s)
+# Get the public IP address of the West US 2 Azure Firewall
+WESTUS2_FWPUBLIC_IP=$(az network public-ip show -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westus2-fw-pip --query "ipAddress" -o tsv)
 
+# Make note of the Internal AKS Service IP (The column title says EXTERNAL_IP)
+kubectl config use-context demo-afd-aks-westus2-cluster
+kubectl get svc
+
+# Create the West US 2 Azure Firewall NAT rule to expose the internal AKS service
+# Please remember to put the AKS service internal IP address as the translated-address parameter value
+
+az network firewall nat-rule create -g demo-afd-aks-westus2-cluster \
+-f demo-afd-aks-westus2-firewall --collection-name 'Demo-AFD-AKS-NAT-Coll-Rule' \
+-n 'DemoInternalAKSSvcRule' --protocols 'TCP' --source-addresses '*' \
+--destination-addresses $WESTUS2_FWPUBLIC_IP --destination-ports 80 \
+--translated-address 10.50.1.35 --translated-port 80 \
+--action Dnat --priority 100
+```
 ```
