@@ -311,7 +311,7 @@ Verify the deployed app has received a **internal** IP.
 kubectl get svc
 ```
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/afd-aks-verify-eastus2-app-internal-kubectl.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-eastus2-app-internal-kubectl.png)
 
 Repeat the same deployment for the West US 2 AKS cluster and verify you have a **internal** IP as the endpoint.
 ```
@@ -320,5 +320,5 @@ kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/A
 kubectl get svc
 ```
 
-![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/afd-aks-verify-westus2-app-internal-kubectl.png)
+![alt text](https://github.com/phillipgibson/Cloud/blob/master/Azure/AKS/using-afd-with-aks/images/aks-afd-verify-westus2-app-internal-kubectl.png)
 
