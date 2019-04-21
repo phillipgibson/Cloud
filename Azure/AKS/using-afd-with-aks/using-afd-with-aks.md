@@ -373,6 +373,18 @@ az network vnet subnet update -g demo-afd-aks-eastus2-cluster \
  --vnet-name demo-afd-aks-eastus2-cluster-vnet \
  --name demo-afd-aks-eastus2-cluster-aks-subnet \
  --route-table demo-afd-aks-eastus2-fw-rtbl
+
+# Get the public IP address of the Azure Firewall
+EASTUS2_FWPUBLIC_IP=$(az network public-ip show -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-fw-pip --query "ipAddress" -o tsv)
+
+# Create the East US 2 Azure Firewall NAT rule to expose the internal AKS service
+> **NOTE:** Please remember to put the AKS service internal IP address as the translated-address parameter value
+az network firewall nat-rule create -g demo-afd-aks-eastus2-cluster \
+ -f demo-afd-aks-eastus2-firewall --collection-name 'Demo-AFD-AKS-NAT-Coll-Rule' \
+ -n 'DemoInternalAKSSvcRule' --protocols 'TCP' --source-addresses '*' \
+ --destination-addresses $EASTUS2_FWPUBLIC_IP --destination-ports 80 \
+ --translated-address 10.50.1.35 --translated-port 80 \
+ --action Dnat --priority 100
  
 # Azure WestUS 2 Region Command(s)
 
