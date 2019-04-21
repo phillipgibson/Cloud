@@ -298,4 +298,16 @@ az network front-door \
  --name DefaultRoutingRule
  ```
  
+ Now we'll redeploy the same application in both the East US 2 and West US 2 Azure regions, but this time they will use the Azure internal load balancer.
+ 
+ For the Azure East US 2 deployment use the following:
+```
+kubectl config use-context demo-afd-aks-eastus2-cluster
+kubectl create -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-eastus2-ilb-app.yaml
+```
+
+Verify the deployed app has received a **internal** IP.
+```
+kubectl get svc
+```
  
