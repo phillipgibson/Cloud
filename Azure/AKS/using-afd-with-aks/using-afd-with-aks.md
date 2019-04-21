@@ -282,5 +282,20 @@ kubectl get svc   # The demo service for the EastUS 2 region should now be delet
 kubectl config use-context demo-afd-aks-westus2-cluster
 kubectl delete -f https://raw.githubusercontent.com/phillipgibson/Cloud/master/Azure/AKS/using-afd-with-aks/phillipgibson-azure-frontdoor-westus2-elb-app.yaml
 kubectl get svc   # The demo service for the WestUS 2 region should now be deleted
-
 ```
+I was attempting to use the Azure CLI to remove the AFD backend pool and routing rules and I received an error. I'm not sure if this is an issue with the preview CLI for AFD, so I went into the portal/UI and just deleted both of them keeping the AFD instance intact. I was attempting to use the following command.
+```
+az network front-door \
+ backend-pool delete \
+ --front-door-name demoafdaks \
+ --resource-group demo-afd-aks-global \
+ --name DefaultBackendPool
+                                         
+az network front-door \
+ routing-rule delete \
+ --front-door-name demoafdaks \
+ --resource-group demo-afd-aks-global \
+ --name DefaultRoutingRule
+ ```
+ 
+ 
