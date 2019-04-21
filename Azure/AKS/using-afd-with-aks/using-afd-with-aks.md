@@ -343,4 +343,8 @@ Configure each Azure Region Azure Firewall IP configuration. This will add the p
 ```
 # Azure EastUS 2 Region
 az network firewall ip-config create -g demo-afd-aks-eastus2-cluster -f demo-afd-aks-eastus2-firewall -n demo-afd-aks-eastus2-fw-config --public-ip-address demo-afd-aks-eastus2-fw-pip --vnet-name demo-afd-aks-eastus2-cluster-vnet
+
+# Azure WestUS 2 Region
+az network firewall ip-config create -g demo-afd-aks-westus2-cluster -f demo-afd-aks-westus2-firewall -n demo-afd-aks-westus2-fw-config --public-ip-address demo-afd-aks-westus2-fw-pip --vnet-name demo-afd-aks-westus2-cluster-vnet
 ```
+
