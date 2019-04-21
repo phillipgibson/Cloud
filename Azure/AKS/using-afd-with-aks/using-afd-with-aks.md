@@ -389,7 +389,11 @@ az network firewall nat-rule create -g demo-afd-aks-westus2-cluster \
 -f demo-afd-aks-westus2-firewall --collection-name 'Demo-AFD-AKS-NAT-Coll-Rule' \
 -n 'DemoInternalAKSSvcRule' --protocols 'TCP' --source-addresses '*' \
 --destination-addresses $WESTUS2_FWPUBLIC_IP --destination-ports 80 \
---translated-address 10.50.1.35 --translated-port 80 \
+--translated-address 10.60.1.35 --translated-port 80 \
 --action Dnat --priority 100
 ```
+You should now be able to access the internal AKS Service in the West US 2 Region by using a browser or a simple curl command to the West US 2 Azure Firewall public IP address
 ```
+curl $WESTUS2_FWPUBLIC_IP
+```
+
