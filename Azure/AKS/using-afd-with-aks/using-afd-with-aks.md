@@ -333,4 +333,8 @@ Create a couple of public IPs for each Azure Firewall we deploy in each Azure re
 az network public-ip create -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-fw-pip -l eastus2 --sku "Standard"
 az network public-ip create -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westus2-fw-pip -l westus2 --sku "Standard"
 ```
-
+Create the two Azure Firewalls for each Azure Region
+```
+az network firewall create -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-firewall -l eastus2
+az network firewall create -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westus2-firewall -l westus2
+```
