@@ -338,3 +338,9 @@ Create the two Azure Firewalls for each Azure Region
 az network firewall create -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-firewall -l eastus2
 az network firewall create -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westus2-firewall -l westus2
 ```
+Configure each Azure Region Azure Firewall IP configuration. This will add the public IP address to the Azure Firewall, as well as associate the Azure Firewall to the VNet in each respective Azure Region
+> **NOTE**: This process can take several minutes to configure per Azure Firewall. Please be patient.
+```
+# Azure EastUS 2 Region
+az network firewall ip-config create -g demo-afd-aks-eastus2-cluster -f demo-afd-aks-eastus2-firewall -n demo-afd-aks-eastus2-fw-config --public-ip-address demo-afd-aks-eastus2-fw-pip --vnet-name demo-afd-aks-eastus2-cluster-vnet
+```
