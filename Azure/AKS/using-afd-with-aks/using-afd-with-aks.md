@@ -338,13 +338,20 @@ Create the two Azure Firewalls for each Azure Region
 az network firewall create -g demo-afd-aks-eastus2-cluster -n demo-afd-aks-eastus2-firewall -l eastus2
 az network firewall create -g demo-afd-aks-westus2-cluster -n demo-afd-aks-westus2-firewall -l westus2
 ```
-Configure each Azure Region Azure Firewall IP configuration. This will add the public IP address to the Azure Firewall, as well as associate the Azure Firewall to the VNet in each respective Azure Region
+Configure each Azure Region Azure Firewall IP configuration. This will add the public IP address to the Azure Firewall, as well as associate the Azure Firewall to the VNet in each respective Azure Region where it will recieve its private IP address.
 > **NOTE**: This process can take several minutes to configure per Azure Firewall. Please be patient.
 ```
-# Azure EastUS 2 Region
+# Azure EastUS 2 Region Command(s)
 az network firewall ip-config create -g demo-afd-aks-eastus2-cluster -f demo-afd-aks-eastus2-firewall -n demo-afd-aks-eastus2-fw-config --public-ip-address demo-afd-aks-eastus2-fw-pip --vnet-name demo-afd-aks-eastus2-cluster-vnet
 
 # Azure WestUS 2 Region
 az network firewall ip-config create -g demo-afd-aks-westus2-cluster -f demo-afd-aks-westus2-firewall -n demo-afd-aks-westus2-fw-config --public-ip-address demo-afd-aks-westus2-fw-pip --vnet-name demo-afd-aks-westus2-cluster-vnet
 ```
+Create the necessary Route Table (User Defined Route - UDR) to ensure that the internal AKS service routes egress network communication through the Azure Firewall. The Azure CLI command for this needs takes in Azure Subscription ID as well, so we'll need to capture that information too.
+```
+# Azure EastUS 2 Region Command(s)
 
+
+# Azure WestUS 2 Region Command(s)
+
+```
