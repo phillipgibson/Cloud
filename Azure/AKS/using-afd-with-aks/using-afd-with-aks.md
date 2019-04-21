@@ -427,4 +427,4 @@ The last thing to do is to harden the Azure Firewalls in each region by adding t
 ## Mission Completed
 This was a journey, but hopefully you have found this helpful and maybe this has demystified and/or provided more details in how you can utilize the Azure Front Door service with the Azure Kubernetes Service. 
 
-Special thanks to my team member
+Special thanks to my team member Jorge Cortes Cano for doing some quick QA on my network configs. Also, if you found this interesting check out Kevin Harris' @kevingbb post on securing AKS https://github.com/kevingbb/ready-aks-security. 
