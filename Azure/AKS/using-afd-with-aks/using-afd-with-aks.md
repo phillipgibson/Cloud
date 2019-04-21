@@ -422,3 +422,9 @@ You can now check that your backends have been configured
 ```
 az network front-door backend-pool list  --front-door-name demoafdaks  --resource-group demo-afd-aks-global --query '[].backends' -o json
 ```
+The last thing to do is to harden the Azure Firewalls in each region by adding the AFD service CIDR range to each NAT rule. You can simply add 147.243.0.0/16 to the Source Addresses property. This will ensure that only traffic originating from AFD is able to hit the Azure Firewall public IP addresses.
+
+## Mission Completed
+This was a journey, but hopefully you have found this helpful and maybe this has demystified and/or provided more details in how you can utilize the Azure Front Door service with the Azure Kubernetes Service. 
+
+Special thanks to my team member
